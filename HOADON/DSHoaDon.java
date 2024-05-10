@@ -259,7 +259,8 @@ public class DSHoaDon {
                 case 0:
                     data.setHoaDon(DSHD, "hoadon.txt");
                     data.setCTHD(CTHDList, "cthd.txt");
-                    System.out.println("==== KET THUC THAO TAC VOI HOA DON =====");
+                    System.out.println("Thoat.........");
+                    return;
             }
         } while (choose != 0);
     }

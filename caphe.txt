@@ -1,0 +1,3 @@
+Ca phe/SP001/Sua dac/34000.0
+Ca phe/SP002/Den/45000.0
+Ca phe/SP006/Sua tuoi/55000.0

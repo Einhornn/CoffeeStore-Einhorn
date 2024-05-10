@@ -6,10 +6,7 @@ import CHUCNANG.Rangbuoc;
 import SANPHAM.*;
 
 import javax.swing.plaf.synth.SynthOptionPaneUI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DSHoaDon {
     private List<Hoadon> DSHD;
@@ -134,38 +131,65 @@ public class DSHoaDon {
         }
     }
     public void xoa() {
-        
+        System.out.println("+=============================+");
+        System.out.println("|        XOA HOA DON         |");
+        System.out.println("+-----------------------------+");
+        System.out.print("Nhap ma hoa don: ");
+        String mahd = Rangbuoc.rangbuocMaHoadon();
+        String choice;
+        do {
+            Iterator<Hoadon> iterator = this.DSHD.iterator();
+            int found = 0;
+            while (iterator.hasNext()) {
+                Hoadon hd = iterator.next();
+                if (mahd.equalsIgnoreCase(hd.maHoadon)) {
+                    System.out.println("Ban co that su muon xoa? (y/n)");
+                    String chon = Rangbuoc.rangbuocYesno();
+                    if (chon.equals("y")) {
+                        iterator.remove();
+                        System.out.println("Xoa thanh cong!");
+                    }
+                    else {
+                        System.out.println("Khong the thuc hien xoa!");
+                        return;
+                    }
+                    found++;
+                }
+            }
+            if (found == 0) {
+                System.out.println("Khong ton tai hoa don muon xoa!");
+            }
+            System.out.println("Bạn có muốn xóa hóa đơn nữa không? (Y/N)");
+            choice = Rangbuoc.rangbuocYesno();
+        } while (choice.equals("y"));
     }
     public void timkiem() {
-
-    }
-    public String getTenSP(String ma) {
-        String ten = "";
-        for (spCaPhe sp : data.getCaPhe("caphe.txt")) {
-            if (ma.equals(sp.getId())) {
-                ten = sp.getTen();
+        System.out.println("+=============================+");
+        System.out.println("|        TIM KIEM HOA DON     |");
+        System.out.println("+-----------------------------+");
+        String choice;
+        do{
+            System.out.print("Nhap ma hoa don: ");
+            String mahd = Rangbuoc.rangbuocMaHoadon();
+            int found = 0;
+            for(Hoadon hd : this.DSHD) {
+                if(hd.maHoadon.equalsIgnoreCase(mahd)) {
+                    hd.xuatHoadon();
+                    for(CTHD cthd : this.CTHDList){
+                        if(cthd.maChitetHoadon.equals(hd.maHoadon)){
+                            cthd.xuatHoadon();
+                            found++;
+                        }
+                    }
+                    System.out.println("+---------------------------------------------------------+");
+                }
             }
-        }
-        for (spTraSua ts : data.getTraSua("trasua.txt")) {
-            if (ma.equals(ts.getId())) {
-                ten = ts.getTen();
+            if(found == 0){
+                System.out.println("Khong co ma hoa don can tim");
             }
-        }
-        return ten;
-    }
-    public String getLoaiSP(String ma) {
-        String loai = "";
-        for (spCaPhe sp : data.getCaPhe("caphe.txt")) {
-            if (ma.equals(sp.getId())) {
-                loai = sp.getLoaiCaphe();
-            }
-        }
-        for (spTraSua ts : data.getTraSua("trasua.txt")) {
-            if (ma.equals(ts.getId())) {
-                loai = ts.getLoaiTrasua();
-            }
-        }
-        return loai;
+            System.out.println("Bạn có muốn tiếp tục tìm kiếm hóa đơn (y/n)");
+            choice = Rangbuoc.rangbuocYesno();
+        }while(choice.equals("y"));
     }
     public void xuat() {
         System.out.println("+=============================+");
@@ -190,7 +214,7 @@ public class DSHoaDon {
                 for (CTHD cthd : CTHDList) {
                     if (cthd.getMaChitetHoadon().equals(ma)) {
                         System.out.printf("| %-5s%-9s%-10s%-8s%-6d%-13.2f%-10.2f |\n",
-                                stt++, getTenSP(cthd.getId()), getLoaiSP(cthd.getId()),
+                                stt++, Rangbuoc.getTenSP(cthd.getId()), Rangbuoc.getLoaiSP(cthd.getId()),
                                 cthd.getSize(), cthd.getSoluongSanpham(),
                                 cthd.getDonGia(), cthd.getDonGia() * cthd.getSoluongSanpham());
                     }
@@ -208,13 +232,38 @@ public class DSHoaDon {
         }
     }
     public void xuatToanboHoadon() {
-        System.out.println("+===================================+");
-        System.out.println("|         DANH SÁCH HÓA ĐƠN         |");
-        System.out.println("+-----------------------------------+");
-        for (Hoadon hoadon : DSHD) {
+        if (this.DSHD.size() == 0) {
+            System.out.println("Khong co hoa don de xuat");
+        } else {
+            System.out.println("+===============================================================+");
+            System.out.println("|                          DANH SACH HOA DON                    |");
+            System.out.println("+---------------------------------------------------------------+");
+            System.out.println("| Mã hóa đơn        Mã nhân viên        Ngày        Tổng tiền   |");
+            System.out.println("+---------------------------------------------------------------+");
+            for (Hoadon hd : this.DSHD) {
+                System.out.printf("| %-20s%-14s%-17s%-10s |\n", hd.getMaHoadon(), hd.getMaNhanvien(), Rangbuoc.traDate(hd.getNgayHoadon()), hd.getTienHoadon());
+            }
+            System.out.println("+===============================================================+");
         }
-        System.out.println("+-----------------------------------+");
     }
+    public void xoaToanboHoadon() {
+            if (this.DSHD.size() == 0) {
+                System.out.println("Khong co hoa don de xoa!");
+            } else {
+                Iterator<Hoadon> iterator = this.DSHD.iterator();
+                while (iterator.hasNext()) {
+                    Hoadon hd = iterator.next();
+                    iterator.remove();
+                }
+                Iterator<CTHD> iterator1 = this.CTHDList.iterator();
+                while (iterator1.hasNext()) {
+                    CTHD ct = iterator1.next();
+                    iterator1.remove();
+                }
+            }
+        System.out.println("Xoa toan bo hoa don thanh cong!");
+    }
+
     public void quanlyDanhsachHoadon() {
         setData();
         int choose;
@@ -228,7 +277,6 @@ public class DSHoaDon {
             System.out.println("|    4. Xuat hoa don                      |");
             System.out.println("|    5. Xuat toan bo hoa don              |");
             System.out.println("|    6. Xoa toan bo hoa don               |");
-            System.out.println("|    7. Sua thong tin hoa don             |");
             System.out.println("|    0. Ket thuc thao tac voi hoa don     |");
             System.out.println("+-----------------------------------------+");
             System.out.println("|          Moi chon 1 thao tac !          |");
@@ -247,15 +295,12 @@ public class DSHoaDon {
                 case 4:
                     xuat();
                     break;
-//                case 5:
-//                    break;
-//                case 6:
-//                    List<Hoadon> hoadonsFromFile = readHD();
-//                    hoadonList.addAll(hoadonsFromFile);
-//                    break;
-//                case 7:
-//                    writeHD(hoadonList);
-//                    break;
+                case 5:
+                    xuatToanboHoadon();
+                    break;
+                case 6:
+                    xoaToanboHoadon();
+                    break;
                 case 0:
                     data.setHoaDon(DSHD, "hoadon.txt");
                     data.setCTHD(CTHDList, "cthd.txt");

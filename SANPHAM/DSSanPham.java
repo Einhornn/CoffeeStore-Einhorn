@@ -401,7 +401,7 @@ public class DSSanPham implements Chucnang {
                     break;
                 case 0:
                     System.out.println("Thoat.........");
-                    System.exit(0);
+                    return;
                 default:
                     System.out.println("LUA CHON KHONG HOP LE [0-8]!");
             }

@@ -198,7 +198,7 @@ public class DatHang {
 		this.xuatDonHang();
 		scan.close();
 	}
-	public static void main(String[] args) {
+	public void quanlyDathang() {
 		DatHang nvDatHang = new DatHang();
 		nvDatHang.nhanDonHang();
 	}

@@ -1,5 +1,6 @@
 package CHUCNANG;
 
+import HOADON.DSHoaDon;
 import NHANVIEN.NhanVien;
 import SANPHAM.SanPham;
 import SANPHAM.spCaPhe;
@@ -7,10 +8,7 @@ import SANPHAM.spTraSua;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Rangbuoc {
     public Rangbuoc() {}
@@ -19,21 +17,54 @@ public class Rangbuoc {
     public static List<spTraSua> DSTS = data.getTraSua("trasua.txt");
     public static Scanner inp = new Scanner(System.in);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    public static Date rangbuocNgayhoadon() {
-        while (true) {
-            try {
-                String ngayHDString = inp.nextLine();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                dateFormat.setLenient(false);
-                Date ngayHD = dateFormat.parse(ngayHDString);
-                return ngayHD;
-            } catch (ParseException e) {
-                System.out.println("Dinh dang ngay khong hop le. Vui long nhap theo dinh dang dd/MM/yyyy.");
-                System.out.print("Moi nhap lai ngay hoadon: ");
+//    public static Date rangbuocNgayhoadon() {
+//        while (true) {
+//            try {
+//                String ngayHDString = inp.nextLine();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//                dateFormat.setLenient(false);
+//                Date ngayHD = dateFormat.parse(ngayHDString);
+//                return ngayHD;
+//            } catch (ParseException e) {
+//                System.out.println("Dinh dang ngay khong hop le. Vui long nhap theo dinh dang dd/MM/yyyy.");
+//                System.out.print("Moi nhap lai ngay hoadon: ");
+//            }
+//        }
+//    }
+    public static String getTenSP(String id) {
+        for (spCaPhe cp : DSCP) {
+            if (cp.getId().equals(id)) {
+                return "Ca phe";
             }
         }
+        return "Tra sua";
     }
-
+    public static String getMaSP(String ten, String loai) {
+        for (spCaPhe cp : DSCP) {
+            if (cp.getTen().equals(ten) && cp.getLoaiCaphe().equals(loai)) {
+                return cp.getId();
+            }
+        }
+        for (spTraSua ts : DSTS) {
+            if (ts.getTen().equals(ten) && ts.getLoaiTrasua().equals(loai)) {
+                return ts.getId();
+            }
+        }
+        return "";
+    }
+    public static String getLoaiSP(String id) {
+        for (spCaPhe cp : DSCP) {
+            if (cp.getId().equals(id)) {
+                return cp.getLoaiCaphe();
+            }
+        }
+        for (spTraSua ts : DSTS) {
+            if (ts.getId().equals(id)) {
+                return ts.getLoaiTrasua();
+            }
+        }
+        return "";
+    }
     public static String rangbuocMaNhanvien() {
         String Input;
         while (true) {
@@ -159,11 +190,11 @@ public class Rangbuoc {
             }
         }
     }
-    public static void xuatDate(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String ngayHoaDon = dateFormat.format(date);
-        System.out.println(ngayHoaDon);
-    }
+//    public static void xuatDate(Date date) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        String ngayHoaDon = dateFormat.format(date);
+//        System.out.println(ngayHoaDon);
+//    }
     public static String traDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(date);
@@ -215,4 +246,13 @@ public class Rangbuoc {
             System.out.println("");
         }
     }
+    public static String generateUniqueMaHoadon() {
+        DSHoaDon dsHoaDon = new DSHoaDon();
+        String maHoadon;
+        do {
+            maHoadon = "HD" + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        } while (dsHoaDon.checkHoadon(maHoadon));
+        return maHoadon;
+    }
+
 }

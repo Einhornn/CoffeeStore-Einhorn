@@ -2,12 +2,9 @@ package DATHANG;
 import CHUCNANG.Data;
 import CHUCNANG.Rangbuoc;
 import HOADON.DSHoaDon;
-import HOADON.Hoadon;
 import SANPHAM.spCaPhe;
 import SANPHAM.spTraSua;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 public class DatHang {
@@ -74,7 +71,7 @@ public class DatHang {
 			System.out.println("+-----------------------------+");
 			System.out.println("| 1. Ca phe                   |");
 			System.out.println("| 2. Tra sua                  |");
-			System.out.println("| 0. Thoat                    |");
+			System.out.println("| 0. Ngung chon               |");
 			System.out.println("+-----------------------------+");
 			System.out.println("|       VUI LONG LUA CHON     |");
 			System.out.println("+=============================+");
@@ -188,15 +185,31 @@ public class DatHang {
 		System.out.println("1. Co");
 		System.out.println("2. Khong");
 		int chonTiep = Rangbuoc.rangbuocSo();
-		while (chonTiep < 1 || chonTiep > 2) {
-			System.out.println("Vui long nhap lai!");
-			System.out.println("Ban co muon chon nua khong ?");
-			System.out.println("1. Co");
-			System.out.println("2. Khong");
-			chonTiep = Rangbuoc.rangbuocSo();
+		switch (chonTiep) {
+			case 1:
+				break;
+			case 2:
+				this.xuatDonHang();
+				System.out.println("+=================================+");
+				System.out.println("|           IN HOA DON            |");
+				System.out.println("+---------------------------------+");
+				this.xuatHoadon();
+				break;
+			default:
 		}
-		this.xuatDonHang();
+//		while (chonTiep < 1 || chonTiep > 2) {
+//			System.out.println("Vui long nhap lai!");
+//			System.out.println("Ban co muon chon nua khong ?");
+//			System.out.println("1. Co");
+//			System.out.println("2. Khong");
+//			chonTiep = Rangbuoc.rangbuocSo();
+//
+//		}
 		scan.close();
+	}
+	public void xuatHoadon() {
+		DSHoaDon hd = new DSHoaDon();
+		hd.xuatHoadonDonhang(DSDH);
 	}
 	public void quanlyDathang() {
 		DatHang nvDatHang = new DatHang();
